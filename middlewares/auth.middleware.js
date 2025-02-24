@@ -12,7 +12,7 @@ const authorize = async (req, res, next) => {
         if(!token)
         {
             return res.status(401).json({
-                message: "Unautorized"
+                message: "Unauthorized"
             })
         }
 
@@ -28,6 +28,7 @@ const authorize = async (req, res, next) => {
 
         req.user = user;
         next();
+
     } catch (error) {
         res.status(401).json({
             message: "Unauthorized",
