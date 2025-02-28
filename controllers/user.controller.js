@@ -123,3 +123,36 @@ export const UpdateUser = async (req, res, next) => {
         next(error);
     }
 }
+
+export const DeleteUser = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            const error = new Error("Authentication required");
+            error.statusCode = 401;
+            throw error;
+        }
+
+        if (req.params.id != req.user.id) {
+            const error = new Error("Not authorized to delete this account");
+            error.statusCode = 403;
+            throw error;
+        }
+
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            const error = new Error("User not found");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        await User.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+}
