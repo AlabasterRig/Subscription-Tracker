@@ -9,4 +9,6 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+export const accountEmail = EMAIL_USE;
+
 export default transporter;
