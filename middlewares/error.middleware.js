@@ -1,3 +1,13 @@
+import winston from 'winston';
+
+const logger = winston.createLogger({
+    level: 'error',
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.File({ filename: 'error.log' })
+    ]
+});
+
 const errorMiddleware = (err, req, res, next) => {
     try {
         let error = { ...err };
@@ -27,6 +37,13 @@ const errorMiddleware = (err, req, res, next) => {
             error = new Error(message.join(', '));
             error.statusCode = 400;
         }
+
+        logger.error({
+            message: err.message,
+            stack: err.stack,
+            path: req.path,
+            method: req.method
+        });
 
         res.status(error.statusCode || 500).json({
             success: false,

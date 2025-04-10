@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { emailTemplates } from "./email-template.js";
 import transporter, { accountEmail } from "../config/nodemailer.js";
+import sanitizeHtml from 'sanitize-html';
 
 export const sendReminderEmail = async ({to, type, subscription}) => {
     if(!to || !type) {
@@ -24,11 +25,13 @@ export const sendReminderEmail = async ({to, type, subscription}) => {
     const message = template.generateBody(mailInfo);
     const subject = template.generateSubject(mailInfo);
 
+    const sanitizedHtml = sanitizeHtml(message);
+
     const mailOptions = {
         from: accountEmail,
         to: to,
         subject: subject,
-        html: message
+        html: sanitizedHtml
     }
 
     transporter.sendMail(mailOptions, (error, info) => {
