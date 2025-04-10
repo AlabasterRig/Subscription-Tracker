@@ -10,14 +10,14 @@ subscriptionRouter.get('/:id', authorize, getSubscriptionDetails);
 
 subscriptionRouter.post('/', authorize, CreateSubscription)
 
-subscriptionRouter.put('/', updateSubscription);
+subscriptionRouter.put('/', authorize, updateSubscription);
 
-subscriptionRouter.delete('/:id', deleteSubscription);
+subscriptionRouter.delete('/:id', authorize, deleteSubscription);
 
 subscriptionRouter.get('/user/:id', authorize, getUserSubscriptions);
 
-subscriptionRouter.put('/:id/cancel', cancelSubscription);
+subscriptionRouter.put('/:id/cancel', authorize, cancelSubscription);
 
-subscriptionRouter.get('/upcoming-renewals', getUpcomingRenewals);
+subscriptionRouter.get('/upcoming-renewals', authorize, getUpcomingRenewals);
 
 export default subscriptionRouter;
