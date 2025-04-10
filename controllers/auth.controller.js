@@ -84,5 +84,15 @@ export const signIn = async (req, res, next) => {
 
 // Sign Out Logic
 export const signOut = async (req, res, next) => {
-    
+    try {
+        // Invalidate the token (if using a token blacklist, add it there)
+        // For simplicity, we'll just send a success response assuming the client will handle token removal
+
+        res.status(200).json({
+            success: true,
+            message: "User signed out successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
 }
